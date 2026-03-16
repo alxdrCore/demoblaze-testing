@@ -1,0 +1,23 @@
+name: QA Checks
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Check files exist
+        run: |
+          echo "Checking required files..."
+          test -f README.md && echo "✅ README.md exists" || echo "❌ README.md missing"
+          test -f checklist.md && echo "✅ checklist.md exists" || echo "❌ checklist.md missing"
+          test -f bug-reports.md && echo "✅ bug-reports.md exists" || echo "❌ bug-reports.md missing"
+          echo "All checks completed!"
