@@ -20,4 +20,5 @@ jobs:
           test -f README.md && echo "✅ README.md exists" || echo "❌ README.md missing"
           test -f checklist.md && echo "✅ checklist.md exists" || echo "❌ checklist.md missing"
           test -f bug-reports.md && echo "✅ bug-reports.md exists" || echo "❌ bug-reports.md missing"
+          test -f Demoblaze.postman_collection.json && echo "✅ Demoblaze.postman_collection.json exists" || echo "❌ Demoblaze.postman_collection.json missing"
           echo "All checks completed!"
