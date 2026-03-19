@@ -17,8 +17,8 @@ jobs:
       - name: Check files exist
         run: |
           echo "Checking required files..."
-          test -f README.md && echo "✅ README.md exists" || echo "❌ README.md missing"
-          test -f checklist.md && echo "✅ checklist.md exists" || echo "❌ checklist.md missing"
-          test -f bug-reports.md && echo "✅ bug-reports.md exists" || echo "❌ bug-reports.md missing"
-          test -f Demoblaze.postman_collection.json && echo "✅ Demoblaze.postman_collection.json exists" || echo "❌ Demoblaze.postman_collection.json missing"
+          test -f README.md && echo "Success README.md exists" || echo "Exception README.md missing"
+          test -f checklist.md && echo "Success checklist.md exists" || echo "Exception checklist.md missing"
+          test -f bug-reports.md && echo "Succes bug-reports.md exists" || echo "Exception bug-reports.md missing"
+          test -f Demoblaze.postman_collection.json && echo "Succes Demoblaze.postman_collection.json exists" || echo "Exception Demoblaze.postman_collection.json missing"
           echo "All checks completed!"
