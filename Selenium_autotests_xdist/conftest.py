@@ -1,7 +1,7 @@
 import pytest
 from selenium import webdriver
 
-@pytest.fixture(params=["firefox", "chrome"], scope="session")
+@pytest.fixture(params=["firefox", "chrome"], scope="function")
 def driver(request):
     if request.param == "firefox":
         driver = webdriver.Firefox()
@@ -11,7 +11,7 @@ def driver(request):
     driver.delete_all_cookies()
     driver.quit()
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def user_data():
     return {
         "username":"1",
