@@ -20,5 +20,6 @@ def user_data():
 
 @pytest.fixture(autouse=True)
 def clear_coockies(driver):
+    driver.delete_all_cookies()
     yield
     driver.delete_all_cookies()
