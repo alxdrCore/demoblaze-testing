@@ -1,54 +1,37 @@
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import time
-
+from pages.login_page import LoginPage
+from pages.main_page import MainPage
+from Utils.alerts_actions import AlertsActions
 
 def test_login_wrong_password(driver, user_data):
-    driver.get("https://demoblaze.com")
+    main_page = MainPage(driver)
 
-    WebDriverWait(driver, 10).until(
-        EC.visibility_of_element_located((By.ID, "login2"))
-    )
-    driver.find_element(By.ID, "login2").click()
-    WebDriverWait(driver, 10).until(
-        EC.visibility_of_element_located((By.ID, "loginusername"))
-    )
+    main_page.open_page()
+    main_page.click_login_button()
 
-    driver.find_element(By.ID, "loginusername").send_keys(user_data["username"])
-    driver.find_element(By.ID, "loginpassword").send_keys("!!!!!!!!!!!!")
-    driver.find_element(By.XPATH, "//button[text()='Log in']").click()
+    login_page = LoginPage(driver)
 
-    WebDriverWait(driver, 10).until(EC.alert_is_present())
-    alert = driver.switch_to.alert
-    alert_text = alert.text
-    print(alert_text)
-    alert.accept()
+    login_page.enter_username(user_data["username"])
+    login_page.enter_password("WRONG-PASSWORD1!")
+    login_page.submit_login()
+
+    alerts_actions = AlertsActions(driver)
+    alert_text = alerts_actions.get_alert_text()
+    alerts_actions.accept_alert()
 
     assert "Wrong password" in alert_text
 
 def test_login_success(driver, user_data):
-    driver.get("https://demoblaze.com")
+    main_page = MainPage(driver)
 
-    WebDriverWait(driver, 10).until(
-        EC.visibility_of_element_located((By.ID, "login2"))
-    )
+    main_page.open_page()
+    main_page.click_login_button()
+    
+    login_page = LoginPage(driver)
 
-    driver.find_element(By.ID, "login2").click()
+    login_page.enter_username(user_data["username"])
+    login_page.enter_password(user_data["password"])
+    login_page.submit_login()
 
-    WebDriverWait(driver, 10).until(
-        EC.visibility_of_element_located((By.ID, "loginusername"))
-    )
+    welcome = main_page.get_welcome_text()
 
-    driver.find_element(By.ID, "loginusername").send_keys(user_data["username"])
-    driver.find_element(By.ID, "loginpassword").send_keys(user_data["password"])
-    driver.find_element(By.XPATH, "//button[text()='Log in']").click()
-
-    WebDriverWait(driver, 10).until(
-        EC.visibility_of_element_located((By.ID, "nameofuser"))
-    )
-
-    welcome = driver.find_element(By.ID, "nameofuser").text
-
-    assert "1" in welcome, f"Неправильный юзер, оне не '1'! Получено : {welcome}"
-    print(welcome)
+    assert user_data["username"] in welcome, f"Неправильный юзер, оне не {user_data["username"]}! Получено : {welcome}"

@@ -1,32 +1,27 @@
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from pages.main_page import MainPage
+from pages.product_page import ProductPage
+from pages.cart_page import CartPage
+from Utils.alerts_actions import AlertsActions
 
-def test_add_to_cart(driver):
-    driver.get("https://demoblaze.com")
-    WebDriverWait(driver, 10).until(
-        EC.visibility_of_element_located((By.XPATH, "//a[text()='Monitors']"))
-    )
+def test_add_to_cart(driver, product_name):
+    main_page = MainPage(driver)
 
-    driver.find_element(By.XPATH, "//a[text()='Monitors']").click()
-    WebDriverWait(driver, 10).until(
-        EC.visibility_of_element_located((By.XPATH, "//a[text()='Apple monitor 24']"))
-    )
+    main_page.open_page()
+    main_page.click_on_product(product_name)
 
-    driver.find_element(By.XPATH, "//a[text()='Apple monitor 24']").click()
-    WebDriverWait(driver, 10).until(
-        EC.visibility_of_element_located((By.XPATH, "//a[text()='Add to cart']"))
-    )
+    product_page = ProductPage(driver)
 
-    driver.find_element(By.XPATH, "//a[text()='Add to cart']").click()
-    WebDriverWait(driver, 10).until(EC.alert_is_present())
-    alert = driver.switch_to.alert
-    alert.accept()
-    driver.find_element(By.ID, "cartur").click()
-    WebDriverWait(driver, 10).until(
-        EC.visibility_of_element_located((By.XPATH, "//td[text()='Apple monitor 24']"))
-    )
+    product_page.click_add_to_cart()
 
-    monitor = driver.find_element(By.XPATH, "//td[text()='Apple monitor 24']").text
+    alerts_system = AlertsActions(driver)
+    
+    alert_text = alerts_system.get_alert_text()
+    assert "Product added" in alert_text
+    alerts_system.accept_alert()
 
-    print("Тест успешно пройден")
+    main_page.click_cart_page()
+
+    cart_page = CartPage(driver)
+
+    cart_page.check_if_product_in_cart(product_name)
+    

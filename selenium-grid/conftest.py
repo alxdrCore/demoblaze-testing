@@ -1,6 +1,10 @@
 import pytest
 from selenium import webdriver
 
+PRODUCT_NAME = "Nokia lumia 1520"
+LOGIN_USERNAME = "1"
+LOGIN_PASSWORD = "1"
+
 @pytest.fixture(params=["firefox", "chrome"])
 def driver(request):
     options = None
@@ -18,12 +22,16 @@ def driver(request):
     driver.delete_all_cookies()
     driver.quit()
 
-@pytest.fixture()
+@pytest.fixture(scope="function")
 def user_data():
     return {
-        "username":"1",
-        "password":"1"
+        "username" : LOGIN_USERNAME,
+        "password" : LOGIN_PASSWORD
     }
+
+@pytest.fixture()
+def product_name():
+    return PRODUCT_NAME
 
 @pytest.fixture(autouse=True)
 def clear_coockies(driver):

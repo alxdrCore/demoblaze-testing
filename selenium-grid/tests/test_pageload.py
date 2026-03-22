@@ -1,13 +1,8 @@
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from pages.main_page import MainPage
 
 def test_mainpage_load(driver):
-    driver.get("https://demoblaze.com")
-    WebDriverWait(driver, 10).until(
-        EC.visibility_of_element_located((By.XPATH, "//a[text()='About us']"))
-    )
+    main_page = MainPage(driver)
 
-    aboutus_text = driver.find_element(By.XPATH, "//a[text()='About us']").text
+    main_page.open_page()
 
-    assert "About us" in aboutus_text 
+    main_page.click_cart_page()
