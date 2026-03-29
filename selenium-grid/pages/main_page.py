@@ -12,8 +12,8 @@ class MainPage:
         self.driver = driver
         self.wait = WebDriverWait(driver, 10)
 
-    def open_page(self):
-        self.driver.get("https://demoblaze.com")
+    def open_page(self, mainPageURL):
+        self.driver.get(mainPageURL)
 
     def click_login_button(self):
         self.wait.until(EC.visibility_of_element_located(self.BUTTON_LOGIN))
