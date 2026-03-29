@@ -1,6 +1,7 @@
 import pytest
 from selenium import webdriver
 
+BASE_URL = "https://demoblaze.com"
 PRODUCT_NAME = "Nokia lumia 1520"
 LOGIN_USERNAME = "1"
 LOGIN_PASSWORD = "1"
@@ -33,8 +34,12 @@ def user_data():
 def product_name():
     return PRODUCT_NAME
 
+@pytest.fixture(scope="session")
+def base_url():
+    return BASE_URL
+
 @pytest.fixture(autouse=True)
-def clear_coockies(driver):
+def clear_cookies(driver):
     driver.delete_all_cookies()
     yield
     driver.delete_all_cookies()
